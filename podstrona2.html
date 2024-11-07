@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Podstrona 2</title>
+    <title>Sukces</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -13,25 +13,22 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
-            background-color: #e0f7fa;
+            background-color: #f4f4f9;
         }
         h1 {
             color: #333;
         }
-        .btn {
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            margin-top: 20px;
-        }
     </style>
 </head>
 <body>
-    <h1>Witaj na podstronie 2</h1>
-    <button class="btn">SEND</button>
+    <h1>Logowanie zakończone sukcesem!</h1>
+    <button onclick="sendAndReturn()">SEND</button>
+
+    <script>
+        function sendAndReturn() {
+            alert("Wiadomość została wysłana!");
+            window.location.href = "index.html"; // Powrót do głównej strony po wysłaniu
+        }
+    </script>
 </body>
 </html>
