@@ -3,44 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Skaner QR</title>
-    <!-- Załaduj lokalnie html5-qrcode.min.js lub z CDN -->
-    <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script> <!-- Zmień ścieżkę na swoją lokalną, jeśli plik jest lokalnie -->
+    <title>Skaner QR i Logowanie</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.7/html5-qrcode.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
+        h1 {
+            color: #333;
+        }
+        #qr-reader, #login-form, #second-qr-reader, #menu {
+            display: none;
+            margin-top: 20px;
+        }
+        #menu {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
 </head>
 <body>
-    <h1>Skaner QR</h1>
+    <h1>Skaner QR i Logowanie</h1>
+
+    <!-- Pierwszy skaner QR -->
     <div id="qr-reader" style="width: 300px;"></div>
-    <div id="qr-reader-results"></div>
+
+    <!-- Formularz logowania -->
+    <div id="login-form">
+        <h2>Logowanie</h2>
+        <input type="text" id="username" placeholder="Username" required><br>
+        <input type="password" id="password" placeholder="Password" required><br>
+        <button onclick="handleLogin()">Login</button>
+    </div>
+
+    <!-- Drugi skaner QR -->
+    <div id="second-qr-reader" style="width: 300px;"></div>
+
+    <!-- Menu z przyciskiem SEND -->
+    <div id="menu">
+        <h2>Menu</h2>
+        <button onclick="handleSend()">SEND</button>
+    </div>
 
     <script>
-        // Funkcja wywoływana po zeskanowaniu kodu QR
-        function onScanSuccess(decodedText, decodedResult) {
-            console.log("Kod QR zeskanowany: " + decodedText);
-            alert("Kod QR zeskanowany: " + decodedText);
-            window.location.href = decodedText;
-        }
+        // Funkcja uruchamiania skanera
+        function startScanner(id, onSuccess) {
+            const qrCodeScanner = new Html5Qrcode(id);
+            const config = { fps: 10, qrbox: { width: 250, height: 250 } };
 
-        // Funkcja inicjalizująca czytnik QR
-        function startScanner() {
-            console.log("Próba uruchomienia skanera...");
-            let qrReader = new Html5Qrcode("qr-reader");
-            qrReader.start(
-                { facingMode: "environment" }, // Użycie tylnej kamery, jeśli jest dostępna
-                {
-                    fps: 10, // Liczba klatek na sekundę
-                    qrbox: { width: 250, height: 250 } // Obszar skanowania
-                },
-                onScanSuccess
-            ).then(() => {
-                console.log("Skaner uruchomiony pomyślnie");
-            }).catch(err => {
-                console.error("Błąd podczas uruchamiania skanera: ", err);
-                alert("Błąd podczas uruchamiania skanera: " + err);
+            qrCodeScanner.start(
+                { facingMode: "environment" },
+                config,
+                onSuccess,
+                errorMessage => console.error("Błąd skanowania:", errorMessage)
+            ).catch(err => {
+                console.error("Błąd uruchomienia skanera:", err);
             });
+            return qrCodeScanner;
         }
 
-        // Uruchomienie skanera przy wczytaniu strony
-        window.addEventListener("load", startScanner);
+        // Pierwszy skaner
+        let firstScanner = startScanner("qr-reader", (decodedText) => {
+            console.log("Pierwszy kod QR:", decodedText);
+            alert("Pierwszy kod QR zeskanowany: " + decodedText);
+            firstScanner.stop();
+            document.getElementById("qr-reader").style.display = "none";
+            document.getElementById("login-form").style.display = "block";
+        });
+
+        // Obsługa logowania
+        function handleLogin() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            if (username && password) {
+                alert(`Zalogowano jako ${username}`);
+                document.getElementById("login-form").style.display = "none";
+                document.getElementById("second-qr-reader").style.display = "block";
+
+                // Uruchomienie drugiego skanera po zalogowaniu
+                let secondScanner = startScanner("second-qr-reader", (decodedText) => {
+                    console.log("Drugi kod QR:", decodedText);
+                    alert("Drugi kod QR zeskanowany: " + decodedText);
+                    secondScanner.stop();
+                    document.getElementById("second-qr-reader").style.display = "none";
+                    document.getElementById("menu").style.display = "block";
+                });
+            } else {
+                alert("Podaj login i hasło");
+            }
+        }
+
+        // Obsługa przycisku SEND
+        function handleSend() {
+            alert("Wysłano dane!");
+        }
     </script>
 </body>
 </html>
+
