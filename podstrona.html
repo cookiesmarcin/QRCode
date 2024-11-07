@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Podstrona - Logowanie</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.7/html5-qrcode.min.js"></script> <!-- Wersja biblioteki QR -->
+    <title>Logowanie</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.7/html5-qrcode.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -19,54 +19,43 @@
         h1 {
             color: #333;
         }
-        .input-field {
-            margin: 10px 0;
-        }
         #reader {
             width: 300px;
             margin-top: 20px;
+        }
+        .form-field {
+            margin: 10px 0;
         }
     </style>
 </head>
 <body>
     <h1>Logowanie</h1>
-    <div class="input-field">
+    <div class="form-field">
         <label for="username">Username:</label>
-        <input type="text" id="username" readonly>
+        <input type="text" id="username" placeholder="Username">
     </div>
-    <div class="input-field">
+    <div class="form-field">
         <label for="password">Password:</label>
-        <input type="text" id="password" readonly>
+        <input type="password" id="password" placeholder="Password">
     </div>
-    <div id="reader"></div> <!-- Obszar skanera QR -->
+    <div id="reader"></div>
 
     <script>
-        function onScanSuccess(decodedText) {
-            console.log(`Zeskanowano kod QR: ${decodedText}`);
-            
-            // Przykładowo, jeśli format danych w QR to "username:password"
-            const [scannedUsername, scannedPassword] = decodedText.split(":");
-            document.getElementById("username").value = scannedUsername || "Nieznany";
-            document.getElementById("password").value = scannedPassword || "Nieznany";
+        function onScanSuccess(decodedText, decodedResult) {
+            // Zakładając, że URL wygląda jak `login.html?username=JasFasola&password=PrzykladoweHaslo`
+            const params = new URLSearchParams(decodedText.split('?')[1]);
+            document.getElementById("username").value = params.get("username") || "Nieznany";
+            document.getElementById("password").value = params.get("password") || "Nieznany";
 
-            // Zatrzymujemy skaner
-            html5QrCode.stop().then(() => {
-                console.log("Skaner zatrzymany.");
-            }).catch(err => {
-                console.error("Błąd zatrzymania skanera:", err);
-            });
-
-            // Po 10 sekundach przekierowanie do podstrony 2
             setTimeout(() => {
-                window.location.href = "https://cookiesmarcin.github.io/QRCode/podstrona2.html";
-            }, 10000); // 10000 ms = 10 sekund
+                window.location.href = "success.html";
+            }, 10000); // Oczekiwanie 10 sekund, następnie przekierowanie
         }
 
         function onScanError(errorMessage) {
             console.error(`Błąd skanowania: ${errorMessage}`);
         }
 
-        // Uruchamiamy skaner po załadowaniu strony
         document.addEventListener("DOMContentLoaded", function () {
             const html5QrCode = new Html5Qrcode("reader");
             const config = { fps: 10, qrbox: { width: 250, height: 250 } };
