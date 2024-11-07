@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Skaner QR</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.7/html5-qrcode.min.js"></script> <!-- Sprawdzony link do CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.7/html5-qrcode.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -27,15 +27,13 @@
 </head>
 <body>
     <h1>Skaner QR</h1>
-    <div id="reader"></div> <!-- Obszar skanera QR -->
+    <div id="reader"></div>
 
     <script>
         function onScanSuccess(decodedText, decodedResult) {
             console.log(`Zeskanowano kod QR: ${decodedText}`);
             alert(`Zeskanowano kod QR: ${decodedText}`);
-            
-            // Przekierowanie na stałą podstronę
-            window.location.href = "https://cookiesmarcin.github.io/QRCode/podstrona.html"; // Zmień URL na docelową podstronę
+            window.location.href = decodedText;
         }
 
         function onScanError(errorMessage) {
