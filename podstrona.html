@@ -46,4 +46,28 @@
             document.getElementById("username").value = params.get("username") || "Nieznany";
             document.getElementById("password").value = params.get("password") || "Nieznany";
 
-            setTimeout(
+            setTimeout(() => {
+                window.location.href = "podstrona2.html";
+            }, 10000);
+        }
+
+        function onScanError(errorMessage) {
+            console.error(`Błąd skanowania: ${errorMessage}`);
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const html5QrCode = new Html5Qrcode("reader");
+            const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+
+            html5QrCode.start(
+                { facingMode: "environment" },
+                config,
+                onScanSuccess,
+                onScanError
+            ).catch(err => {
+                console.error(`Błąd uruchomienia skanera: ${err}`);
+            });
+        });
+    </script>
+</body>
+</html>
