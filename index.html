@@ -33,7 +33,9 @@
         function onScanSuccess(decodedText, decodedResult) {
             console.log(`Zeskanowano kod QR: ${decodedText}`);
             alert(`Zeskanowano kod QR: ${decodedText}`);
-            window.location.href = decodedText;
+            
+            // Przekierowanie na stałą podstronę
+            window.location.href = "https://example.com/twoja-podstrona"; // Zmień URL na docelową podstronę
         }
 
         function onScanError(errorMessage) {
@@ -56,3 +58,4 @@
     </script>
 </body>
 </html>
+
