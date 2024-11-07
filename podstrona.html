@@ -42,33 +42,8 @@
 
     <script>
         function onScanSuccess(decodedText, decodedResult) {
-            // Zakładając, że URL wygląda jak `login.html?username=JasFasola&password=PrzykladoweHaslo`
             const params = new URLSearchParams(decodedText.split('?')[1]);
             document.getElementById("username").value = params.get("username") || "Nieznany";
             document.getElementById("password").value = params.get("password") || "Nieznany";
 
-            setTimeout(() => {
-                window.location.href = "success.html";
-            }, 10000); // Oczekiwanie 10 sekund, następnie przekierowanie
-        }
-
-        function onScanError(errorMessage) {
-            console.error(`Błąd skanowania: ${errorMessage}`);
-        }
-
-        document.addEventListener("DOMContentLoaded", function () {
-            const html5QrCode = new Html5Qrcode("reader");
-            const config = { fps: 10, qrbox: { width: 250, height: 250 } };
-
-            html5QrCode.start(
-                { facingMode: "environment" },
-                config,
-                onScanSuccess,
-                onScanError
-            ).catch(err => {
-                console.error(`Błąd uruchomienia skanera: ${err}`);
-            });
-        });
-    </script>
-</body>
-</html>
+            setTimeout(
