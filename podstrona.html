@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Podstrona</title>
+    <title>Podstrona - Logowanie</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.7/html5-qrcode.min.js"></script> <!-- Wersja biblioteki QR -->
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -13,15 +14,72 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
-            background-color: #e0f7fa;
+            background-color: #f4f4f9;
         }
         h1 {
             color: #333;
         }
+        .input-field {
+            margin: 10px 0;
+        }
+        #reader {
+            width: 300px;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
-    <h1>Witaj na podstronie!</h1>
-    <p>To jest treść podstrony, na którą przekierowuje skanowanie QR.</p>
+    <h1>Logowanie</h1>
+    <div class="input-field">
+        <label for="username">Username:</label>
+        <input type="text" id="username" readonly>
+    </div>
+    <div class="input-field">
+        <label for="password">Password:</label>
+        <input type="text" id="password" readonly>
+    </div>
+    <div id="reader"></div> <!-- Obszar skanera QR -->
+
+    <script>
+        function onScanSuccess(decodedText) {
+            console.log(`Zeskanowano kod QR: ${decodedText}`);
+            
+            // Przykładowo, jeśli format danych w QR to "username:password"
+            const [scannedUsername, scannedPassword] = decodedText.split(":");
+            document.getElementById("username").value = scannedUsername || "Nieznany";
+            document.getElementById("password").value = scannedPassword || "Nieznany";
+
+            // Zatrzymujemy skaner
+            html5QrCode.stop().then(() => {
+                console.log("Skaner zatrzymany.");
+            }).catch(err => {
+                console.error("Błąd zatrzymania skanera:", err);
+            });
+
+            // Po 10 sekundach przekierowanie do podstrony 2
+            setTimeout(() => {
+                window.location.href = "https://twoj_uzytkownik.github.io/nazwa_repozytorium/podstrona2.html";
+            }, 10000); // 10000 ms = 10 sekund
+        }
+
+        function onScanError(errorMessage) {
+            console.error(`Błąd skanowania: ${errorMessage}`);
+        }
+
+        // Uruchamiamy skaner po załadowaniu strony
+        document.addEventListener("DOMContentLoaded", function () {
+            const html5QrCode = new Html5Qrcode("reader");
+            const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+
+            html5QrCode.start(
+                { facingMode: "environment" },
+                config,
+                onScanSuccess,
+                onScanError
+            ).catch(err => {
+                console.error(`Błąd uruchomienia skanera: ${err}`);
+            });
+        });
+    </script>
 </body>
 </html>
