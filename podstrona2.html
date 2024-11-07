@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sukces</title>
+    <title>Podstrona 2</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,20 +15,41 @@
             margin: 0;
             background-color: #f4f4f9;
         }
+
         h1 {
             color: #333;
+        }
+
+        #send-button {
+            background-color: #28a745; /* Zielony kolor */
+            color: white; /* Biały kolor tekstu */
+            font-size: 24px; /* Duża czcionka */
+            padding: 15px 30px; /* Większa przestrzeń wokół tekstu */
+            border: none;
+            border-radius: 5px; /* Zaokrąglone rogi */
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+
+        #send-button:hover {
+            background-color: #218838; /* Ciemniejszy zielony na hover */
+        }
+
+        #send-button:active {
+            background-color: #1e7e34; /* Jeszcze ciemniejszy zielony na kliknięcie */
         }
     </style>
 </head>
 <body>
-    <h1>Logowanie zakończone sukcesem!</h1>
-    <button onclick="sendAndReturn()">SEND</button>
+    <h1>Podstrona 2</h1>
+    <button id="send-button">SEND</button>
 
     <script>
-        function sendAndReturn() {
-            alert("Wiadomość została wysłana!");
-            window.location.href = "index.html"; // Powrót do głównej strony po wysłaniu
-        }
+        document.getElementById("send-button").addEventListener("click", function() {
+            alert("Wysłano pomyślnie!");
+            window.location.href = "https://cookiesmarcin.github.io/QRCode/"; // Powrót do głównej strony
+        });
     </script>
 </body>
 </html>
