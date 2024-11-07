@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skaner QR</title>
+    <!-- Załaduj lokalnie html5-qrcode.min.js lub z CDN -->
+    <script src="html5-qrcode.min.js"></script> <!-- Zmień ścieżkę na swoją lokalną, jeśli plik jest lokalnie -->
+</head>
+<body>
+    <h1>Skaner QR</h1>
+    <div id="qr-reader" style="width: 300px;"></div>
+    <div id="qr-reader-results"></div>
+
+    <script>
+        // Funkcja wywoływana po zeskanowaniu kodu QR
+        function onScanSuccess(decodedText, decodedResult) {
+            console.log("Kod QR zeskanowany: " + decodedText);
+            alert("Kod QR zeskanowany: " + decodedText);
+            window.location.href = decodedText;
+        }
+
+        // Funkcja inicjalizująca czytnik QR
+        function startScanner() {
+            console.log("Próba uruchomienia skanera...");
+            let qrReader = new Html5Qrcode("qr-reader");
+            qrReader.start(
+                { facingMode: "environment" }, // Użycie tylnej kamery, jeśli jest dostępna
+                {
+                    fps: 10, // Liczba klatek na sekundę
+                    qrbox: { width: 250, height: 250 } // Obszar skanowania
+                },
+                onScanSuccess
+            ).then(() => {
+                console.log("Skaner uruchomiony pomyślnie");
+            }).catch(err => {
+                console.error("Błąd podczas uruchamiania skanera: ", err);
+                alert("Błąd podczas uruchamiania skanera: " + err);
+            });
+        }
+
+        // Uruchomienie skanera przy wczytaniu strony
+        window.addEventListener("load", startScanner);
+    </script>
+</body>
+</html>
