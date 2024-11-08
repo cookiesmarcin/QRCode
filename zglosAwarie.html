@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ALERT SYSTEM 4.0</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.7/html5-qrcode.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -57,6 +58,11 @@
             color: white;
             font-size: 1em;
         }
+        #reader {
+            width: 100%;
+            max-width: 300px;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -65,6 +71,7 @@
     <div class="instruction">Zeskanuj kod zepsutej maszyny</div>
 
     <select id="tool">
+        <option value="" disabled selected hidden>Wybierz maszynę</option>
         <option>01_STBX726_KLEJARKA</option>
         <option>01_STBX726_KEBBER</option>
         <option>12_OU10_BRAMA11</option>
@@ -72,7 +79,34 @@
         <option>15_WOZEK_PALECIAK</option>
     </select>
 
+    <div id="reader"></div>
+
     <button class="button button-submit" onclick="alert('Awaria zgłoszona!')">ZGŁOŚ</button>
     <button class="button button-cancel" onclick="window.location.href='alertAwaria.html'">ANULUJ</button>
+
+    <script>
+        function onScanSuccess(decodedText) {
+            alert(`Zeskanowano kod: ${decodedText}`);
+            // Dalsza logika obsługi zeskanowanego kodu
+        }
+
+        function onScanError(errorMessage) {
+            console.error(`Błąd skanowania: ${errorMessage}`);
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const html5QrCode = new Html5Qrcode("reader");
+            const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+
+            html5QrCode.start(
+                { facingMode: "environment" },
+                config,
+                onScanSuccess,
+                onScanError
+            ).catch(err => {
+                console.error(`Błąd uruchomienia skanera: ${err}`);
+            });
+        });
+    </script>
 </body>
 </html>
