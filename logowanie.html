@@ -46,11 +46,15 @@
 
     <script>
         function onScanSuccess(decodedText) {
-            // Upewnij się, że tekst zaczyna się od "?", aby rozpoznać jako parametry URL
             if (decodedText.startsWith("?")) {
                 const params = new URLSearchParams(decodedText);
                 document.getElementById("username").value = params.get("username") || "";
                 document.getElementById("password").value = params.get("password") || "";
+
+                // Automatyczne przekierowanie po 5 sekundach
+                setTimeout(() => {
+                    window.location.href = "alertAwaria.html";
+                }, 5000);
             } else {
                 console.warn("Kod QR nie zawiera poprawnych parametrów.");
             }
