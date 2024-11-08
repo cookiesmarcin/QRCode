@@ -46,13 +46,14 @@
 
     <script>
         function onScanSuccess(decodedText) {
-            const params = new URLSearchParams(decodedText.split('?')[1]);
-            document.getElementById("username").value = params.get("username") || "";
-            document.getElementById("password").value = params.get("password") || "";
-
-            setTimeout(() => {
-                window.location.href = "arertAwaria.html";
-            }, 5000);
+            // Upewnij się, że tekst zaczyna się od "?", aby rozpoznać jako parametry URL
+            if (decodedText.startsWith("?")) {
+                const params = new URLSearchParams(decodedText);
+                document.getElementById("username").value = params.get("username") || "";
+                document.getElementById("password").value = params.get("password") || "";
+            } else {
+                console.warn("Kod QR nie zawiera poprawnych parametrów.");
+            }
         }
 
         function onScanError(errorMessage) {
@@ -75,3 +76,4 @@
     </script>
 </body>
 </html>
+
