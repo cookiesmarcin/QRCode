@@ -35,11 +35,11 @@
 
     <select id="tool">
         <option value="" disabled selected hidden>Wybierz maszynę</option>
-        <option>01_STBX726_KLEJARKA</option>
-        <option>01_STBX726_KEBBER</option>
-        <option>12_OU10_BRAMA11</option>
-        <option>04_SK380_AFROS</option>
-        <option>15_WOZEK_PALECIAK</option>
+        <option value="01_STBX726_KLEJARKA">01_STBX726_KLEJARKA</option>
+        <option value="01_STBX726_KEBBER">01_STBX726_KEBBER</option>
+        <option value="12_OU10_BRAMA11">12_OU10_BRAMA11</option>
+        <option value="04_SK380_AFROS">04_SK380_AFROS</option>
+        <option value="15_WOZEK_PALECIAK">15_WOZEK_PALECIAK</option>
     </select>
 
     <div id="reader"></div>
@@ -49,48 +49,6 @@
 
     <script>
         let html5QrCode;
-        
+
         function onScanSuccess(decodedText) {
-            // Wybieranie opcji w dropdownie na podstawie zeskanowanego kodu
-            const params = new URLSearchParams(decodedText);
-            const toolValue = params.get("tool");
-
-            if (toolValue) {
-                const toolSelect = document.getElementById("tool");
-                for (let i = 0; i < toolSelect.options.length; i++) {
-                    if (toolSelect.options[i].value === toolValue) {
-                        toolSelect.selectedIndex = i;
-                        break;
-                    }
-                }
-                // Zatrzymanie kamery po zeskanowaniu
-                html5QrCode.stop().then(() => {
-                    console.log("Skanowanie zatrzymane.");
-                }).catch(err => {
-                    console.error("Błąd zatrzymania skanera: ", err);
-                });
-            } else {
-                alert("Nieprawidłowy kod QR lub brak odpowiedniej maszyny.");
-            }
-        }
-
-        function onScanError(errorMessage) {
-            console.error(`Błąd skanowania: ${errorMessage}`);
-        }
-
-        document.addEventListener("DOMContentLoaded", function () {
-            html5QrCode = new Html5Qrcode("reader");
-            const config = { fps: 10, qrbox: { width: 250, height: 250 } };
-
-            html5QrCode.start(
-                { facingMode: "environment" },
-                config,
-                onScanSuccess,
-                onScanError
-            ).catch(err => {
-                console.error(`Błąd uruchomienia skanera: ${err}`);
-            });
-        });
-    </script>
-</body>
-</html>
+            // Wybieranie opcji w dropdownie na podstawie zeskan
