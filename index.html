@@ -31,13 +31,8 @@
 
     <script>
         function onScanSuccess(decodedText, decodedResult) {
-            console.log(`Zeskanowano kod QR: ${decodedText}`);
             alert(`Zeskanowano kod QR: ${decodedText}`);
             window.location.href = decodedText;
-        }
-
-        function onScanError(errorMessage) {
-            console.error(`Błąd skanowania: ${errorMessage}`);
         }
 
         document.addEventListener("DOMContentLoaded", function () {
@@ -48,12 +43,9 @@
                 { facingMode: "environment" },
                 config,
                 onScanSuccess,
-                onScanError
-            ).catch(err => {
-                console.error(`Błąd uruchomienia skanera: ${err}`);
-            });
+                (error) => console.error("Błąd skanowania", error)
+            );
         });
     </script>
 </body>
 </html>
-
