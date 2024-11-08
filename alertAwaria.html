@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ALERT SYSTEM 4.0</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.7/html5-qrcode.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -12,71 +11,68 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            text-align: center;
             height: 100vh;
             margin: 0;
             background-color: #f4f4f9;
+            padding: 20px;
         }
         h1 {
             color: #333;
+            margin-bottom: 10px;
+        }
+        .title {
+            font-size: 1.5em;
+            color: yellow;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .instruction {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        #tool {
+            font-size: 1.2em;
+            width: 100%;
+            padding: 10px;
             margin-bottom: 20px;
         }
-        .form-field {
+        .button {
+            font-size: 1.2em;
+            padding: 15px;
             margin: 10px 0;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
+            width: 80%;
+            max-width: 300px;
+            cursor: pointer;
+            border: none;
         }
-        #reader {
-            width: 300px;
-            margin-top: 20px;
+        .button-submit {
+            background-color: yellow;
+            color: #333;
+            font-weight: bold;
+        }
+        .button-cancel {
+            background-color: gray;
+            color: white;
+            font-size: 1em;
         }
     </style>
 </head>
 <body>
     <h1>ALERT SYSTEM 4.0</h1>
-    <div class="form-field">
-        <label for="username">Username:</label>
-        <input type="text" id="username" placeholder="Username">
-    </div>
-    <div class="form-field">
-        <label for="password">Password:</label>
-        <input type="password" id="password" placeholder="Password">
-    </div>
-    <div id="reader"></div>
+    <div class="title">ZGŁASZANIE AWARII</div>
+    <div class="instruction">Zeskanuj kod zepsutej maszyny</div>
 
-    <script>
-        function onScanSuccess(decodedText) {
-            if (decodedText.startsWith("?")) {
-                const params = new URLSearchParams(decodedText);
-                document.getElementById("username").value = params.get("username") || "";
-                document.getElementById("password").value = params.get("password") || "";
+    <select id="tool">
+        <option>01_STBX726_KLEJARKA</option>
+        <option>01_STBX726_KEBBER</option>
+        <option>12_OU10_BRAMA11</option>
+        <option>04_SK380_AFROS</option>
+        <option>15_WOZEK_PALECIAK</option>
+    </select>
 
-                // Automatyczne przekierowanie po 5 sekundach
-                setTimeout(() => {
-                    window.location.href = "alertAwaria.html";
-                }, 5000);
-            } else {
-                console.warn("Kod QR nie zawiera poprawnych parametrów.");
-            }
-        }
-
-        function onScanError(errorMessage) {
-            console.error(`Błąd skanowania: ${errorMessage}`);
-        }
-
-        document.addEventListener("DOMContentLoaded", function () {
-            const html5QrCode = new Html5Qrcode("reader");
-            const config = { fps: 10, qrbox: { width: 250, height: 250 } };
-
-            html5QrCode.start(
-                { facingMode: "environment" },
-                config,
-                onScanSuccess,
-                onScanError
-            ).catch(err => {
-                console.error(`Błąd uruchomienia skanera: ${err}`);
-            });
-        });
-    </script>
+    <button class="button button-submit" onclick="alert('Awaria zgłoszona!')">ZGŁOŚ</button>
+    <button class="button button-cancel" onclick="window.location.href='alertAwaria.html'">ANULUJ</button>
 </body>
 </html>
