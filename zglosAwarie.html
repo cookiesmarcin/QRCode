@@ -51,4 +51,49 @@
         let html5QrCode;
 
         function onScanSuccess(decodedText) {
-            // Wybieranie opcji w dropdownie na podstawie zeskan
+            // Wybieranie opcji w dropdownie na podstawie zeskanowanego kodu
+            const params = new URLSearchParams(decodedText.split('?')[1]);
+            const toolValue = params.get("tool");
+
+            if (toolValue) {
+                const toolSelect = document.getElementById("tool");
+                let found = false;
+                for (let i = 0; i < toolSelect.options.length; i++) {
+                    if (toolSelect.options[i].value === toolValue) {
+                        toolSelect.selectedIndex = i;
+                        found = true;
+                        break;
+                    }
+                }
+                
+                // Jeśli opcja została rozpoznana, zatrzymaj skaner
+                if (found) {
+                    html5QrCode.stop().then(() => {
+                        console.log("Skanowanie zatrzymane.");
+                    }).catch(err => {
+                        console.error("Błąd zatrzymania skanera: ", err);
+                    });
+                }
+            }
+        }
+
+        function onScanError(errorMessage) {
+            console.error(`Błąd skanowania: ${errorMessage}`);
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            html5QrCode = new Html5Qrcode("reader");
+            const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+
+            html5QrCode.start(
+                { facingMode: "environment" },
+                config,
+                onScanSuccess,
+                onScanError
+            ).catch(err => {
+                console.error(`Błąd uruchomienia skanera: ${err}`);
+            });
+        });
+    </script>
+</body>
+</html>
