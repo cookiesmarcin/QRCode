@@ -22,11 +22,32 @@
         .title { font-size: 1.5em; color: yellow; font-weight: bold; margin-bottom: 5px; }
         .instruction { font-size: 0.9em; color: #666; margin-bottom: 15px; }
         #tool, #description { font-size: 1.2em; width: 100%; padding: 10px; margin-bottom: 20px; }
-        .button { font-size: 1.2em; padding: 15px; margin: 10px 0; width: 80%; max-width: 300px; cursor: pointer; border: none; }
-        .button-submit { background-color: yellow; color: #333; font-weight: bold; }
-        .button-cancel { background-color: gray; color: white; font-size: 1em; }
+        .button {
+            font-size: 1.2em;
+            padding: 15px;
+            margin: 10px 0;
+            width: 80%;
+            max-width: 300px;
+            cursor: pointer;
+            border: none;
+        }
+        .button-submit {
+            background-color: yellow;
+            color: #333;
+            font-weight: bold;
+        }
+        .button-submit.disabled {
+            background-color: #ccc;
+            color: #666;
+            cursor: not-allowed;
+        }
+        .button-cancel {
+            background-color: gray;
+            color: white;
+            font-size: 1em;
+        }
         #reader { width: 100%; max-width: 300px; margin-top: 20px; }
-        #description-container { display: none; } /* Nowe pole ukryte początkowo */
+        #description-container { display: none; }
     </style>
 </head>
 <body>
@@ -34,8 +55,7 @@
     <div class="title">ZGŁASZANIE AWARII</div>
     <div class="instruction">Zeskanuj kod zepsutej maszyny</div>
 
-    <!-- Pole wyboru maszyny -->
-    <select id="tool" onchange="showDescription()">
+    <select id="tool" onchange="showDescription(); checkFields()">
         <option value="" disabled selected hidden>Wybierz maszynę</option>
         <option value="01_STBX726_KLEJARKA">01_STBX726_KLEJARKA</option>
         <option value="01_STBX726_KEBBER">01_STBX726_KEBBER</option>
@@ -44,9 +64,8 @@
         <option value="15_WOZEK_PALECIAK">15_WOZEK_PALECIAK</option>
     </select>
 
-    <!-- Nowe pole wyboru przyczyny awarii, które pojawia się po wybraniu maszyny -->
     <div id="description-container">
-        <select id="description">
+        <select id="description" onchange="checkFields()">
             <option value="" disabled selected hidden>Wybierz przyczynę awarii</option>
             <option value="Nie działa - automatyk">Nie działa - automatyk</option>
             <option value="Ale urwał - mechanik">Ale urwał - mechanik</option>
@@ -58,7 +77,7 @@
 
     <div id="reader"></div>
 
-    <button class="button button-submit" onclick="submitReport()">ZGŁOŚ</button>
+    <button id="submitBtn" class="button button-submit disabled" onclick="submitReport()" disabled>ZGŁOŚ</button>
     <button class="button button-cancel" onclick="window.location.href='alertAwaria.html'">ANULUJ</button>
 
     <script>
@@ -88,11 +107,25 @@
                     showDescription();
                 }
             }
+            checkFields();
         }
 
         function showDescription() {
-            // Pokazanie pola opisu, które pojawia się poniżej pola wyboru maszyny
             document.getElementById("description-container").style.display = "block";
+        }
+
+        function checkFields() {
+            const toolSelected = document.getElementById("tool").value !== "";
+            const descriptionSelected = document.getElementById("description").value !== "";
+            const submitBtn = document.getElementById("submitBtn");
+
+            if (toolSelected && descriptionSelected) {
+                submitBtn.classList.remove("disabled");
+                submitBtn.disabled = false;
+            } else {
+                submitBtn.classList.add("disabled");
+                submitBtn.disabled = true;
+            }
         }
 
         function onScanError(errorMessage) {
