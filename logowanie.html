@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Logowanie</title>
+    <title>ALERT SYSTEM 4.0</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.7/html5-qrcode.min.js"></script>
     <style>
         body {
@@ -16,6 +16,16 @@
             margin: 0;
             background-color: #f4f4f9;
         }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .form-field {
+            margin: 10px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
         #reader {
             width: 300px;
             margin-top: 20px;
@@ -23,19 +33,30 @@
     </style>
 </head>
 <body>
-    <h1>Logowanie</h1>
+    <h1>ALERT SYSTEM 4.0</h1>
+    <div class="form-field">
+        <label for="username">Username:</label>
+        <input type="text" id="username" placeholder="Username">
+    </div>
+    <div class="form-field">
+        <label for="password">Password:</label>
+        <input type="password" id="password" placeholder="Password">
+    </div>
     <div id="reader"></div>
 
     <script>
         function onScanSuccess(decodedText) {
-            const urlParams = new URLSearchParams(decodedText.split('?')[1]);
-            const username = urlParams.get("username") || "Nieznany";
-            const password = urlParams.get("password") || "Nieznany";
+            const params = new URLSearchParams(decodedText.split('?')[1]);
+            document.getElementById("username").value = params.get("username") || "";
+            document.getElementById("password").value = params.get("password") || "";
 
-            alert(`Logowanie jako: ${username}`);
             setTimeout(() => {
                 window.location.href = "arertAwaria.html";
             }, 5000);
+        }
+
+        function onScanError(errorMessage) {
+            console.error(`Błąd skanowania: ${errorMessage}`);
         }
 
         document.addEventListener("DOMContentLoaded", function () {
@@ -46,8 +67,10 @@
                 { facingMode: "environment" },
                 config,
                 onScanSuccess,
-                (error) => console.error("Błąd skanowania", error)
-            );
+                onScanError
+            ).catch(err => {
+                console.error(`Błąd uruchomienia skanera: ${err}`);
+            });
         });
     </script>
 </body>
