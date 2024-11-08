@@ -48,19 +48,45 @@
     <button class="button button-cancel" onclick="window.location.href='alertAwaria.html'">ANULUJ</button>
 
     <script>
+        let html5QrCode;
+        
         function onScanSuccess(decodedText) {
-            alert(`Zeskanowano kod: ${decodedText}`);
+            // Wybieranie opcji w dropdownie na podstawie zeskanowanego kodu
+            const params = new URLSearchParams(decodedText);
+            const toolValue = params.get("tool");
+
+            if (toolValue) {
+                const toolSelect = document.getElementById("tool");
+                for (let i = 0; i < toolSelect.options.length; i++) {
+                    if (toolSelect.options[i].value === toolValue) {
+                        toolSelect.selectedIndex = i;
+                        break;
+                    }
+                }
+                // Zatrzymanie kamery po zeskanowaniu
+                html5QrCode.stop().then(() => {
+                    console.log("Skanowanie zatrzymane.");
+                }).catch(err => {
+                    console.error("Błąd zatrzymania skanera: ", err);
+                });
+            } else {
+                alert("Nieprawidłowy kod QR lub brak odpowiedniej maszyny.");
+            }
+        }
+
+        function onScanError(errorMessage) {
+            console.error(`Błąd skanowania: ${errorMessage}`);
         }
 
         document.addEventListener("DOMContentLoaded", function () {
-            const html5QrCode = new Html5Qrcode("reader");
+            html5QrCode = new Html5Qrcode("reader");
             const config = { fps: 10, qrbox: { width: 250, height: 250 } };
 
             html5QrCode.start(
                 { facingMode: "environment" },
                 config,
                 onScanSuccess,
-                (error) => console.error(`Błąd skanowania: ${error}`)
+                onScanError
             ).catch(err => {
                 console.error(`Błąd uruchomienia skanera: ${err}`);
             });
