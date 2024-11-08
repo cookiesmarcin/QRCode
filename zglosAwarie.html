@@ -18,51 +18,14 @@
             background-color: #f4f4f9;
             padding: 20px;
         }
-        h1 {
-            color: #333;
-            margin-bottom: 10px;
-        }
-        .title {
-            font-size: 1.5em;
-            color: yellow;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        .instruction {
-            font-size: 0.9em;
-            color: #666;
-            margin-bottom: 15px;
-        }
-        #tool {
-            font-size: 1.2em;
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-        }
-        .button {
-            font-size: 1.2em;
-            padding: 15px;
-            margin: 10px 0;
-            width: 80%;
-            max-width: 300px;
-            cursor: pointer;
-            border: none;
-        }
-        .button-submit {
-            background-color: yellow;
-            color: #333;
-            font-weight: bold;
-        }
-        .button-cancel {
-            background-color: gray;
-            color: white;
-            font-size: 1em;
-        }
-        #reader {
-            width: 100%;
-            max-width: 300px;
-            margin-top: 20px;
-        }
+        h1 { color: #333; margin-bottom: 10px; }
+        .title { font-size: 1.5em; color: yellow; font-weight: bold; margin-bottom: 5px; }
+        .instruction { font-size: 0.9em; color: #666; margin-bottom: 15px; }
+        #tool { font-size: 1.2em; width: 100%; padding: 10px; margin-bottom: 20px; }
+        .button { font-size: 1.2em; padding: 15px; margin: 10px 0; width: 80%; max-width: 300px; cursor: pointer; border: none; }
+        .button-submit { background-color: yellow; color: #333; font-weight: bold; }
+        .button-cancel { background-color: gray; color: white; font-size: 1em; }
+        #reader { width: 100%; max-width: 300px; margin-top: 20px; }
     </style>
 </head>
 <body>
@@ -87,11 +50,6 @@
     <script>
         function onScanSuccess(decodedText) {
             alert(`Zeskanowano kod: ${decodedText}`);
-            // Dalsza logika obsługi zeskanowanego kodu
-        }
-
-        function onScanError(errorMessage) {
-            console.error(`Błąd skanowania: ${errorMessage}`);
         }
 
         document.addEventListener("DOMContentLoaded", function () {
@@ -102,7 +60,7 @@
                 { facingMode: "environment" },
                 config,
                 onScanSuccess,
-                onScanError
+                (error) => console.error(`Błąd skanowania: ${error}`)
             ).catch(err => {
                 console.error(`Błąd uruchomienia skanera: ${err}`);
             });
