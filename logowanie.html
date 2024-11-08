@@ -46,22 +46,13 @@
 
     <script>
         function onScanSuccess(decodedText) {
-            if (decodedText.startsWith("?")) {
-                const params = new URLSearchParams(decodedText);
-                document.getElementById("username").value = params.get("username") || "";
-                document.getElementById("password").value = params.get("password") || "";
+            const params = new URLSearchParams(decodedText);
+            document.getElementById("username").value = params.get("username") || "";
+            document.getElementById("password").value = params.get("password") || "";
 
-                // Automatyczne przekierowanie po 5 sekundach
-                setTimeout(() => {
-                    window.location.href = "alertAwaria.html";
-                }, 5000);
-            } else {
-                console.warn("Kod QR nie zawiera poprawnych parametrów.");
-            }
-        }
-
-        function onScanError(errorMessage) {
-            console.error(`Błąd skanowania: ${errorMessage}`);
+            setTimeout(() => {
+                window.location.href = "alertAwaria.html";
+            }, 5000);
         }
 
         document.addEventListener("DOMContentLoaded", function () {
@@ -72,7 +63,7 @@
                 { facingMode: "environment" },
                 config,
                 onScanSuccess,
-                onScanError
+                (error) => console.error(`Błąd skanowania: ${error}`)
             ).catch(err => {
                 console.error(`Błąd uruchomienia skanera: ${err}`);
             });
