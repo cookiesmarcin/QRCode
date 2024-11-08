@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akcje</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
+        button {
+            font-size: 1.2em;
+            padding: 15px 30px;
+            margin: 10px;
+            width: 80%;
+        }
+        .zglos { background-color: yellow; }
+        .eskaluj { background-color: orange; }
+        .zamknij { background-color: green; color: white; }
+    </style>
+</head>
+<body>
+    <button class="zglos" onclick="window.location.href='zglosAwarie.html'">ZGŁOŚ AWARIĘ</button>
+    <button class="eskaluj" onclick="window.location.href='eskalujAwarie.html'">ESKALUJ AWARIĘ</button>
+    <button class="zamknij" onclick="window.location.href='zamknijAwarie.html'">ZAMKNIJ AWARIĘ</button>
+</body>
+</html>
