@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zgłoś Awarie</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.7/html5-qrcode.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
+    </style>
+</head>
+<body>
+    <h1>Zeskanuj kod zepsutej maszyny</h1>
+    <select id="tool">
+        <option>01_STBX726_KLEJARKA</option>
+        <option>01_STBX726_KEBBER</option>
+        <option>12_OU10_BRAMA11</option>
+        <option>04_SK380_AFROS</option>
+        <option>15_WOZEK_PALECIAK</option>
+    </select>
+    <button onclick="alert('Awaria zgłoszona!')">ZGŁOŚ</button>
+    <button onclick="window.history.back()">ANULUJ</button>
+</body>
+</html>
